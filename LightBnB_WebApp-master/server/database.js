@@ -1,5 +1,16 @@
+
 const properties = require('./json/properties.json');
 const users = require('./json/users.json');
+
+const { Pool } = require('pg');
+
+const pool = new Pool({
+  user: 'vagrant',
+  password: 123,
+  host: 'localhost',
+  database: 'lightbnb'
+});
+
 
 /// Users
 
@@ -19,7 +30,7 @@ const getUserWithEmail = function(email) {
     }
   }
   return Promise.resolve(user);
-}
+};
 exports.getUserWithEmail = getUserWithEmail;
 
 /**
@@ -29,7 +40,7 @@ exports.getUserWithEmail = getUserWithEmail;
  */
 const getUserWithId = function(id) {
   return Promise.resolve(users[id]);
-}
+};
 exports.getUserWithId = getUserWithId;
 
 
@@ -43,7 +54,7 @@ const addUser =  function(user) {
   user.id = userId;
   users[userId] = user;
   return Promise.resolve(user);
-}
+};
 exports.addUser = addUser;
 
 /// Reservations
@@ -55,7 +66,7 @@ exports.addUser = addUser;
  */
 const getAllReservations = function(guest_id, limit = 10) {
   return getAllProperties(null, 2);
-}
+};
 exports.getAllReservations = getAllReservations;
 
 /// Properties
@@ -67,12 +78,20 @@ exports.getAllReservations = getAllReservations;
  * @return {Promise<[{}]>}  A promise to the properties.
  */
 const getAllProperties = function(options, limit = 10) {
-  const limitedProperties = {};
-  for (let i = 1; i <= limit; i++) {
-    limitedProperties[i] = properties[i];
-  }
-  return Promise.resolve(limitedProperties);
-}
+  const values = [limit];
+  const queryString = `
+  SELECT * FROM properties
+  LIMIT $1
+  `;
+  return pool.query(queryString, values)
+    .then(res => res.rows)
+    .catch(err => console.error('query error', err.stack));
+  // const limitedProperties = {};
+  // for (let i = 1; i <= limit; i++) {
+  //   limitedProperties[i] = properties[i];
+  // }
+  // return Promise.resolve(limitedProperties);
+};
 exports.getAllProperties = getAllProperties;
 
 
@@ -86,5 +105,5 @@ const addProperty = function(property) {
   property.id = propertyId;
   properties[propertyId] = property;
   return Promise.resolve(property);
-}
+};
 exports.addProperty = addProperty;
