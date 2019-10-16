@@ -13,17 +13,6 @@ LIMIT 10;
 --AVG DID NOT COME OUT WITH THE CORRECT NUMBER--
 --TESTING--
 
---WRONG--
--- SELECT title, cost_per_night, start_date, AVG(rating)
--- FROM property_reviews
--- JOIN properties ON (property_id = properties.id)
--- JOIN reservations ON (reservation_id = reservations.id)
--- WHERE reservations.guest_id = 1
--- AND end_date < now()::date
--- GROUP BY title, cost_per_night, start_date
--- ORDER BY start_date
--- LIMIT 10;
-
 --RIGHT--
 -- SELECT title, cost_per_night, start_date, AVG(rating)
 -- FROM reservations
@@ -34,6 +23,18 @@ LIMIT 10;
 -- GROUP BY title, cost_per_night, start_date
 -- ORDER BY start_date
 -- LIMIT 10;
+
+--WRONG--
+-- SELECT title, cost_per_night, start_date, AVG(rating)
+-- FROM property_reviews
+-- JOIN properties ON (property_id = properties.id)
+-- RIGHT JOIN reservations ON (reservation_id = reservations.id)
+-- WHERE reservations.guest_id = 1
+-- AND end_date < now()::date
+-- GROUP BY title, cost_per_night, start_date
+-- ORDER BY start_date
+-- LIMIT 10;
+
 
 --CODE TO HELP SOLVE--
 -- SELECT AVG(rating), title
