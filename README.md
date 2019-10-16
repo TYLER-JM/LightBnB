@@ -1,0 +1,1 @@
+A project using SQL and a simple database. Like a knock-off AirBnB.
