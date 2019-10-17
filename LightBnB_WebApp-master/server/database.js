@@ -134,7 +134,7 @@ module.exports = {
       property.description,
       property.thumbnail_photo_url,
       property.cover_photo_url,
-      property.cost_per_night,
+      property.cost_per_night * 100,
       property.parking_spaces,
       property.number_of_bathrooms,
       property.number_of_bedrooms,
