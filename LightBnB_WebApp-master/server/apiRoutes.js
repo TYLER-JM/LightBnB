@@ -15,6 +15,8 @@ module.exports = function(router, database) {
       res.error("💩");
       return;
     }
+
+    //INSERT HERE A POST TO /reservations
     database.getAllReservations(userId)
     .then(reservations => res.send({reservations}))
     .catch(e => {
